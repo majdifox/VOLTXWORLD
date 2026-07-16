@@ -13,10 +13,11 @@
 /* ── Base ────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
-  background: #050505;
+  background: #000000;
   color: var(--color-foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
@@ -27,56 +28,6 @@ body {
 ::selection {
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
-}
-
-/* ── Loading Screen ──────────────────────────── */
-.loading-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #050505;
-}
-
-.loading-logo {
-  animation: logoPulse 2s ease-in-out infinite;
-}
-
-@keyframes logoPulse {
-
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(0.97);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.03);
-  }
-}
-
-/* ── Neon Sign Loading ─────────── */
-.electric-loading {
-  animation: electricFlicker 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
-  filter: drop-shadow(0 4px 30px rgba(255,255,255,0.08));
-}
-
-@keyframes electricFlicker {
-  0% { opacity: 0.1; filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
-  10% { opacity: 1; filter: drop-shadow(0 0 40px rgba(255,255,255,1)); }
-  15% { opacity: 0.2; filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
-  25% { opacity: 1; filter: drop-shadow(0 0 50px rgba(255,255,255,0.9)); }
-  35% { opacity: 0.5; filter: drop-shadow(0 4px 30px rgba(255,255,255,0.08)); }
-  40% { opacity: 1; filter: drop-shadow(0 0 30px rgba(255,255,255,0.8)); }
-  60% { opacity: 1; filter: drop-shadow(0 4px 30px rgba(255,255,255,0.08)); }
-  80% { opacity: 0.8; filter: drop-shadow(0 4px 30px rgba(255,255,255,0.08)); }
-  85% { opacity: 0.3; filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
-  90% { opacity: 1; filter: drop-shadow(0 0 60px rgba(255,255,255,1)); }
-  95% { opacity: 0.9; filter: drop-shadow(0 4px 30px rgba(255,255,255,0.08)); }
-  100% { opacity: 1; filter: drop-shadow(0 4px 30px rgba(255,255,255,0.08)); }
 }
 
 /* ── Radial Glow ─────────────────────────────── */
@@ -114,11 +65,6 @@ body {
 }
 
 /* ── Subtle gradient line ────────────────────── */
-.loading-logo-image {
-  animation: loadPulse 3s ease-in-out infinite; /* Slower load pulse */
-  filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));
-}
-
 .gradient-line {
   width: 120px;
   height: 1px;
@@ -129,13 +75,34 @@ body {
   margin: 0 auto;
 }
 
+/* ── Metallic sheen sweep ─────────────────────────────────────────────────
+   A single studio-light reflection that travels across the logo V → X.
+   Applied to a masked overlay — the logo img itself never moves.
+   The gradient is wide and very soft so it reads as polished metal,
+   not a scan line or digital effect.
+   Plays once, then the overlay opacity drops to 0 and stays there.
+── */
+
+/* The wrapper fades in first, then the gradient moves */
+@keyframes sheenFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* The gradient translates from left-of-frame to right-of-frame */
+@keyframes metalSheen {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(280%); }
+}
+
+
 /* ── Custom scrollbar ────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -147,20 +114,15 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* ── Reduced Motion ──────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+/* ── Responsive typography ───────────────────── */
+@media (max-width: 640px) {
+  .radial-glow {
+    width: 300px;
+    height: 300px;
   }
 
-  .loading-logo {
-    animation: none;
-    opacity: 1;
+  .gradient-line {
+    width: 80px;
   }
 }
 

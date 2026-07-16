@@ -18,7 +18,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "VOLTX® — The Future of Local Experiences",
   description:
-    "VOLTX is building the future of local experiences by helping students, communities, creators, and businesses discover opportunities, meet the right people, and transform digital interactions into meaningful real-world connections.",
+    "VOLTXsss is building the future of local experiences by helping students, communities, creators, and businesses discover opportunities, meet the right people, and transform digital interactions into meaningful real-world connections.",
   keywords: [
     "VOLTX",
     "local experiences",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: "VOLTX®",
     title: "VOLTX® — The Future of Local Experiences",
     description:
-      "Technology should bring people closer, not keep them apart. VOLTX is building the future of local experiences.",
+      " should bring people closer, not keep them apart. VOLTX is building the future of local experiences.",
   },
   twitter: {
     card: "summary_large_image",

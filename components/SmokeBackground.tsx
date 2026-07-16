@@ -1,36 +1,27 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function SmokeBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Cinematic slow-mo as requested
-    video.playbackRate = 0.4;
+    // Natural realistic speed, no slow-mo distortion
+    video.playbackRate = 1.0;
+    
+    // We only fade it in once enough data is loaded so it doesn't pop
+    const handleCanPlay = () => setIsLoaded(true);
+    video.addEventListener("canplaythrough", handleCanPlay);
+    // If it's already ready (cached), fire immediately
+    if (video.readyState >= 3) setIsLoaded(true);
 
-    const handleTimeUpdate = () => {
-      if (!video.duration) return;
-      const timeLeft = video.duration - video.currentTime;
-      const fadeDuration = 1.5; // 1.5 seconds fade to hide the cut
-
-      // Base opacity is 0.8 for cinematic presence
-      const baseOpacity = 0.8;
-
-      if (timeLeft < fadeDuration) {
-        // Fade out to black at the end to hide the harsh cut
-        video.style.opacity = String(Math.max(0, timeLeft / fadeDuration) * baseOpacity);
-      } else {
-        // Instantly visible at base opacity (no initial fade-in needed since we wait for loading screen)
-        video.style.opacity = String(baseOpacity);
-      }
+    return () => {
+      video.removeEventListener("canplaythrough", handleCanPlay);
     };
-
-    video.addEventListener("timeupdate", handleTimeUpdate);
-    return () => video.removeEventListener("timeupdate", handleTimeUpdate);
   }, []);
 
   return (
@@ -38,8 +29,8 @@ export default function SmokeBackground() {
       style={{
         position: "fixed",
         inset: 0,
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "100%",
         pointerEvents: "none",
         zIndex: 0,
         backgroundColor: "#000000",
@@ -57,10 +48,14 @@ export default function SmokeBackground() {
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          opacity: 0.8, // Starts instantly visible
-          transition: "opacity 0.1s linear",
+          // Subtle atmospheric background
+          opacity: isLoaded ? 0.35 : 0,
+          // Very slow, natural fade-in when the page loads
+          transition: "opacity 4s cubic-bezier(0.25, 0.1, 0.25, 1)",
+          willChange: "opacity",
         }}
       >
+        <source src="/smoke-intro.mp4" type="video/mp4" />
         <source src="/smoke-video.mp4" type="video/mp4" />
       </video>
     </div>
