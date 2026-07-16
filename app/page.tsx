@@ -29,7 +29,7 @@ export default function Home() {
     const tDone = setTimeout(() => {
       setPhase("done");
       document.body.style.overflow = "";
-    }, 4300);
+    }, 2300);
 
     return () => {
       clearTimeout(tReveal);

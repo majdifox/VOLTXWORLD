@@ -5,21 +5,27 @@ import type { IntroPhase } from "@/app/page";
 
 // ─── Below-the-fold content animation variants ────────────────────────────────
 const container: Variants = {
-  hidden: { opacity: 0 },
+  hidden: {},
   visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.16, delayChildren: 0.2 },
+    transition: {
+      staggerChildren: 0.5, // controls the delay between each item
+      delayChildren: 0,
+    },
   },
 };
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: {
+    opacity: 0,
+  },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 1.0, ease },
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
   },
 };
 
@@ -37,7 +43,8 @@ interface HeroContentProps {
 }
 
 export default function HeroContent({ phase }: HeroContentProps) {
-  const logoSize = "clamp(320px, 48vw, 760px)";
+  // Completely responsive logo size: shrinks to 280px on tiny phones, caps at 820px on ultrawides
+  const logoSize = "clamp(280px, 65vw, 820px)";
 
   // Logo fades in when the initial smoke intro finishes
   const logoVisible = phase === "reveal" || phase === "done";
@@ -55,7 +62,7 @@ export default function HeroContent({ phase }: HeroContentProps) {
         When phase → "reveal", the logo fades in via CSS over 2.4s.
         It sits at z-index 10, perfectly atop the persistent smoke background.
       */}
-      <div className="relative flex h-screen w-full flex-col items-center justify-center">
+      <div className="relative flex h-screen w-full flex-col items-center justify-center -translate-y-6">
 
         {/* Atmospheric ambient glow — very subtle, fades in with the logo */}
         <div
@@ -161,99 +168,134 @@ export default function HeroContent({ phase }: HeroContentProps) {
               />
             </div>
           )}
+
+          {/*
+            ── Typography & Footer ──────────────────────────────────────────────
+            Mounts only after the overlay is fully gone (phase === "done").
+            Absolutely positioned below the logo to ensure perfect 12-16px spacing
+            without disrupting the logo's precise flex centering.
+          */}
+          {contentVisible && (
+            <motion.div
+              // Attach to bottom of the logo, center horizontally across the screen
+              className="absolute left-1/2 top-full flex flex-col items-center pt-3 sm:pt-4"
+              style={{
+                width: "100vw",
+                transform: "translateX(-50%)",
+                // Push the footer exactly to the bottom of the viewport 
+                // (50vh - 50% of the logo height is the remaining space to the bottom)
+                minHeight: "calc(50vh - 50%)",
+              }}
+              variants={container}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="flex h-full w-full max-w-[1200px] flex-col items-center px-6 pb-2 pointer-events-auto text-center">
+
+                {/* Tagline */}
+                {/* 
+                {/* Tagline */}
+                {/* 
+                  ========================================================================
+                  USER CONTROLS: TAGLINE ("Build Your World")
+                  1. marginTop: We now use clamp() so it scales perfectly on phones AND monitors!
+                     It pulls up by -80px on phones, and -240px on huge monitors.
+                  2. marginBottom: Controls the distance between this tagline and the mission below it.
+                  3. fontSize: You can use clamp() or exact sizes like "32px", "2rem".
+                  4. fontFamily: Change the font/police here.
+                  ========================================================================
+                */}
+                <motion.h2
+                  variants={fadeUp}
+                  className="font-light tracking-wide text-white"
+                  style={{
+                    fontFamily: "var(--font-heading)", /* <-- FONT (POLICE) */
+                    fontSize: "clamp(0.9rem, 1.5vw, 1.25rem)", /* <-- SIZE */
+                    marginTop: "clamp(-240px, -20vw, -80px)", /* <-- SCALES PROPERLY ON PHONES NOW! */
+                    marginBottom: "clamp(30px, 8vw, 80px)", /* <-- CHANGE THIS TO PUSH DESCRIPTION FURTHER AWAY */
+                  }}
+                >
+                  Build Your World
+                </motion.h2>
+
+                {/* Mission */}
+                {/* 
+                  ========================================================================
+                  USER CONTROLS: MISSION PARAGRAPH
+                  1. marginTop: If the tagline pulled this up too high, increase this (e.g., "40px") to push it down.
+                  2. fontSize: Adjust the text size.
+                  ========================================================================
+                */}
+                <motion.p
+                  variants={fadeUp}
+                  className="mx-auto max-w-[680px] px-4 font-light leading-[1.55] tracking-wide text-white sm:px-0"
+                  style={{
+                    fontFamily: "inherit", /* <-- FONT (POLICE). "inherit" uses the default font. */
+                    fontSize: "clamp(0.95rem, 1.35vw, 1.1rem)", /* <-- SIZE */
+                    marginTop: "0px", /* <-- INCREASE TO PUSH DOWN AWAY FROM TAGLINE */
+                    marginBottom: "clamp(40px, 10vw, 80px)", /* <-- DISTANCE TO "LAUNCHING SOON" */
+                  }}
+                >
+                  VOLTX&apos;s mission is to bridge the gap between curiosity and action,
+                  empowering people to discover new opportunities, build meaningful
+                  connections, and find where they truly belong.
+                </motion.p>
+
+                {/* Launching Soon */}
+                <motion.div variants={fadeUp} className="mb-12">
+                  <span
+                    className="inline-block text-[1.05rem] uppercase tracking-[0.4em] text-white opacity-95"
+                    style={{ fontFamily: "var(--font-heading)" }}
+                  >
+                    LAUNCHING SOON
+                  </span>
+                </motion.div>
+
+                {/* Footer Section (Pinned to bottom) */}
+                <motion.div
+                  variants={fadeUp}
+                 className="mt-auto flex w-full flex-col items-center justify-end pt-10 pb-0"
+                >
+                  {/* Created By & Signature (Moved to footer) */}
+                  <div className="mb-6 flex flex-col items-center justify-center">
+                 <p className="-mb-4 text-[0.7rem] uppercase tracking-[0.3em] text-white opacity-50">
+                      Created by
+                    </p>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/majdi-signature.svg"
+                      alt="Mehdi Majdi Signature"
+                      // Responsive signature size: smaller on phones, huge on desktop
+                      className="h-24 w-auto object-contain opacity-90 sm:h-32 md:h-40"
+                      style={{ filter: "brightness(0) invert(1)" }}
+                    />
+                  </div>
+
+                  {/* Morocco Line */}
+                  <div className="mb-4 flex flex-wrap items-center justify-center gap-3 text-[0.8rem] tracking-widest text-white opacity-60">
+                    <span>Built in Morocco.</span>
+                    {/* Official Moroccan Flag SVG (crisp, no rounded edges) */}
+<img
+  src="/morocco-flag.svg"
+  alt="Flag of Morocco"
+  className="h-4 w-auto object-contain"
+/>
+                    <span>Designed for the world.</span>
+                  </div>
+
+                  {/* Copyright */}
+                  <footer role="contentinfo">
+                    <p className="text-[0.65rem] uppercase tracking-[0.2em] text-white opacity-30">
+                      © 2026 VOLTX®. All rights reserved.
+                    </p>
+                  </footer>
+                </motion.div>
+
+              </div>
+            </motion.div>
+          )}
         </header>
       </div>
-
-      {/*
-        ── Below-the-fold content ─────────────────────────────────────────────
-        Mounts only after the overlay is fully gone (phase === "done").
-        Animates in with a simple fade — no transform, no slide.
-      */}
-      {contentVisible && (
-        <motion.div
-          // Use pt-4 so the tagline sits very close to the logo
-          className="flex flex-col items-center justify-center px-6 pb-24 pt-4 text-center"
-          variants={container}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Tagline */}
-          <motion.h2
-            variants={fadeUp}
-            className="mb-10 text-[clamp(1.75rem,3.5vw,3rem)] font-light tracking-wide text-white"
-            style={{ fontFamily: "var(--font-heading)" }}
-          >
-            Build Your World
-          </motion.h2>
-
-          {/* Mission */}
-          <motion.p
-            variants={fadeUp}
-            className="mx-auto mb-20 max-w-[800px] text-[clamp(1.1rem,1.8vw,1.35rem)] font-light leading-[1.8] tracking-wide text-white"
-          >
-            VOLTX™&apos;s mission is to bridge the gap between curiosity and action,
-            empowering people to discover new opportunities, build meaningful
-            connections, and find where they truly belong.
-          </motion.p>
-
-          {/* Launching Soon */}
-          <motion.div variants={fadeUp} className="mb-24">
-            <span
-              className="inline-block text-[0.85rem] uppercase tracking-[0.4em] text-white opacity-80"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              LAUNCHING SOON
-            </span>
-          </motion.div>
-
-          {/* Created By & Signature */}
-          <motion.div variants={fadeUp} className="mb-24 flex flex-col items-center justify-center">
-            <p className="mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-white opacity-50">
-              Created by
-            </p>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/majdi-signature.svg"
-              alt="Mehdi Majdi Signature"
-              // Adjust height as needed. Use filter to ensure it displays as white if the original is black.
-              className="h-14 w-auto object-contain opacity-90"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
-          </motion.div>
-
-          {/* Morocco Line */}
-          <motion.div
-            variants={fadeUp}
-            className="mb-20 flex flex-wrap items-center justify-center gap-4 text-[0.8rem] tracking-widest text-white opacity-60"
-          >
-            <span>Built in Morocco.</span>
-            {/* Small inline Moroccan Flag SVG */}
-            <svg
-              viewBox="0 0 900 600"
-              className="h-[14px] w-auto rounded-[2px] shadow-sm"
-              aria-label="Flag of Morocco"
-              role="img"
-            >
-              <rect width="900" height="600" fill="#c1272d" />
-              <polygon
-                points="450,150 478,284 602,274 507,358 541,489 450,402 359,489 393,358 298,274 422,284"
-                fill="none"
-                stroke="#006233"
-                strokeWidth="25"
-                strokeLinejoin="miter"
-              />
-            </svg>
-            <span>Designed for the world.</span>
-          </motion.div>
-
-          {/* Copyright */}
-          <motion.footer variants={fadeUp} role="contentinfo">
-            <p className="text-[0.65rem] uppercase tracking-[0.2em] text-white opacity-30">
-              © 2026 VOLTX®. All rights reserved.
-            </p>
-          </motion.footer>
-        </motion.div>
-      )}
     </div>
   );
 }
