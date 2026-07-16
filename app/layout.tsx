@@ -49,15 +49,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "VOLTX™",
-    title: "VOLTX® — The Future of Local Experiences",
+    title: "VOLTX® — Break The Limits",
     description:
-      "Technology should bring people closer, not keep them apart. VOLTX is building the future of local experiences.",
+      "Explore the world. Meet your people. Live the moment.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "VOLTX® — The Future of Local Experiences",
+    title: "VOLTX® — Break The Limits",
     description:
-      "Technology should bring people closer, not keep them apart. VOLTX is building the future of local experiences.",
+      "Explore the world. Meet your people. Live the moment.",
     creator: "@voltx",
   },
   robots: {
