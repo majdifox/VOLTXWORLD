@@ -1,13 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Outfit } from "next/font/google";
-import { Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400"],
-  style: ["normal", "italic"],
-});
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,10 +15,16 @@ const outfit = Outfit({
   weight: ["400", "500", "600", "700"],
 });
 
+const SITE_URL = "https://voltx.io";
+const SITE_DESCRIPTION =
+  "VOLTX is building the future of local experiences by helping students, communities, creators, and businesses discover opportunities, meet the right people, and transform digital interactions into meaningful real-world connections.";
+
 export const metadata: Metadata = {
-  title: "VOLTX® — The Future of Local Experiences",
-  description:
-    "VOLTXsss is building the future of local experiences by helping students, communities, creators, and businesses discover opportunities, meet the right people, and transform digital interactions into meaningful real-world connections.",
+  title: {
+    default: "VOLTX™",
+    template: "%s | VOLTX™",
+  },
+  description: SITE_DESCRIPTION,
   keywords: [
     "VOLTX",
     "local experiences",
@@ -41,15 +40,18 @@ export const metadata: Metadata = {
   authors: [{ name: "Mehdi Majdi" }],
   creator: "VOLTX",
   publisher: "VOLTX",
-  metadataBase: new URL("https://voltx.io"),
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://voltx.io",
-    siteName: "VOLTX®",
+    url: SITE_URL,
+    siteName: "VOLTX™",
     title: "VOLTX® — The Future of Local Experiences",
     description:
-      " should bring people closer, not keep them apart. VOLTX is building the future of local experiences.",
+      "Technology should bring people closer, not keep them apart. VOLTX is building the future of local experiences.",
   },
   twitter: {
     card: "summary_large_image",
@@ -61,10 +63,22 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   icons: {
-    icon: "/icon.svg",
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: "/icon.svg",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#050505",
 };
 
 // JSON-LD structured data
@@ -73,9 +87,8 @@ const jsonLd = {
   "@type": "Organization",
   name: "VOLTX",
   alternateName: "VOLTX®",
-  url: "https://voltx.io",
-  description:
-    "VOLTX is building the future of local experiences by helping students, communities, creators, and businesses discover opportunities, meet the right people, and transform digital interactions into meaningful real-world connections.",
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
   founder: {
     "@type": "Person",
     name: "Mehdi Majdi",

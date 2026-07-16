@@ -2,6 +2,8 @@
 
 import { motion, type Variants } from "framer-motion";
 import type { IntroPhase } from "@/app/page";
+import WaitlistForm from "./WaitlistForm";
+import ScrollIndicator from "./ScrollIndicator";
 
 // ─── Below-the-fold content animation variants ────────────────────────────────
 const container: Variants = {
@@ -14,8 +16,6 @@ const container: Variants = {
   },
 };
 
-const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
 const fadeUp: Variants = {
   hidden: {
     opacity: 0,
@@ -26,15 +26,6 @@ const fadeUp: Variants = {
       duration: 0.8,
       ease: [0.25, 0.1, 0.25, 1],
     },
-  },
-};
-
-const fadeLine: Variants = {
-  hidden: { opacity: 0, scaleX: 0 },
-  visible: {
-    opacity: 1,
-    scaleX: 1,
-    transition: { duration: 1.0, ease },
   },
 };
 
@@ -190,7 +181,10 @@ export default function HeroContent({ phase }: HeroContentProps) {
               initial="hidden"
               animate="visible"
             >
-              <div className="flex h-full w-full max-w-[1200px] flex-col items-center px-6 pb-2 pointer-events-auto text-center">
+              <div
+                id="mission-content"
+                className="flex h-full w-full max-w-[1200px] flex-col items-center px-6 pb-2 pointer-events-auto text-center"
+              >
 
                 {/* Tagline */}
                 {/* 
@@ -251,14 +245,18 @@ export default function HeroContent({ phase }: HeroContentProps) {
                   </span>
                 </motion.div>
 
-                {/* Footer Section (Pinned to bottom) */}
-                <motion.div
-                  variants={fadeUp}
-                 className="mt-auto flex w-full flex-col items-center justify-end pt-10 pb-0"
-                >
+                {/* Waitlist Signup */}
+                <motion.div variants={fadeUp} className="mb-12  flex w-full justify-center">
+                  <WaitlistForm />
+                </motion.div>
+
+          <motion.div
+  variants={fadeUp}
+  className="mt-auto flex w-full flex-col items-center justify-end pt-36 pb-0"
+>
                   {/* Created By & Signature (Moved to footer) */}
-                  <div className="mb-6 flex flex-col items-center justify-center">
-                 <p className="-mb-4 text-[0.7rem] uppercase tracking-[0.3em] text-white opacity-50">
+                  <div className="mb-0 flex flex-col items-center justify-center">
+                 <p className="-mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-white opacity-50">
                       Created by
                     </p>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -271,24 +269,96 @@ export default function HeroContent({ phase }: HeroContentProps) {
                     />
                   </div>
 
-                  {/* Morocco Line */}
-                  <div className="mb-4 flex flex-wrap items-center justify-center gap-3 text-[0.8rem] tracking-widest text-white opacity-60">
-                    <span>Built in Morocco.</span>
-                    {/* Official Moroccan Flag SVG (crisp, no rounded edges) */}
-<img
-  src="/morocco-flag.svg"
-  alt="Flag of Morocco"
-  className="h-4 w-auto object-contain"
-/>
-                    <span>Designed for the world.</span>
+                  {/* Contact: Instagram + Email — matched icon pair, email reveals on hover */}
+                  <div className="mb-4 flex items-center justify-center gap-6">
+                    <a
+                      href="https://www.instagram.com/voltxworld/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="VOLTX on Instagram"
+                      className="group relative flex h-9 w-9 items-center justify-center rounded-full text-white opacity-60 transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:opacity-100"
+                    >
+                      {/* Soft halo — mirrors Apple's circular icon-button hover state */}
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-0 scale-90 rounded-full bg-white/0 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-100 group-hover:bg-white/[0.06]"
+                      />
+                      {/* Minimal inline Instagram glyph — no external icon package */}
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.3"
+                        aria-hidden="true"
+                        className="relative transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.08]"
+                      >
+                        <rect x="2" y="2" width="20" height="20" rx="6" />
+                        <circle cx="12" cy="12" r="4.2" />
+                        <circle cx="17.2" cy="6.8" r="0.8" fill="currentColor" stroke="none" />
+                      </svg>
+                    </a>
+
+                    {/* Slim divider — quieter than a slash, closer to Apple's footer typography */}
+                    <span aria-hidden="true" className="h-3 w-px bg-white/20" />
+
+                    {/*
+                      Email — icon-only at rest, expands into a pill on hover to reveal
+                      the address. Keeps the row minimal by default, rewards a closer look.
+                    */}
+                    <a
+                      href="mailto:contact@voltxworld.com"
+                      aria-label="Email VOLTX at contact@voltxworld.com"
+                      className="group relative flex h-9 items-center overflow-hidden rounded-full pl-[9px] pr-[9px] text-white opacity-60 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-white/[0.06] hover:pr-4 hover:opacity-100"
+                    >
+                      {/* Minimal inline envelope glyph — matches Instagram glyph's weight */}
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.3"
+                        aria-hidden="true"
+                        className="relative shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.08]"
+                      >
+                        <rect x="2.5" y="5" width="19" height="14" rx="3" />
+                        <path d="M4 6.5 L12 13 L20 6.5" />
+                      </svg>
+
+                      {/* The address — collapsed to nothing at rest, slides out on hover */}
+                      <span
+                        className="max-w-0 overflow-hidden whitespace-nowrap text-[0.8rem] tracking-widest opacity-0 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:ml-2 group-hover:max-w-[220px] group-hover:opacity-100"
+                      >
+                        contact@voltxworld.com
+                      </span>
+                    </a>
                   </div>
 
-                  {/* Copyright */}
-                  <footer role="contentinfo">
-                    <p className="text-[0.65rem] uppercase tracking-[0.2em] text-white opacity-30">
-                      © 2026 VOLTX®. All rights reserved.
-                    </p>
-                  </footer>
+                {/* Morocco Line */}
+<div className="mb-4 flex flex-col items-center justify-center gap-2 text-[0.8rem] tracking-widest">
+  <div className="flex items-center justify-center gap-1.5 text-white opacity-60">
+    <span>Built in Morocco</span>
+
+    <img
+      src="/morocco-flag.svg"
+      alt="Flag of Morocco"
+      className="h-4 w-auto object-contain"
+    />
+  </div>
+
+  <span className="text-white opacity-40">
+    Designed for the world.
+  </span>
+</div>
+
+{/* Copyright */}
+<footer role="contentinfo">
+  <p className="text-[0.65rem] uppercase tracking-[0.2em] text-white opacity-20">
+    © 2026 VOLTX®. All rights reserved.
+  </p>
+</footer>
                 </motion.div>
 
               </div>
@@ -296,6 +366,8 @@ export default function HeroContent({ phase }: HeroContentProps) {
           )}
         </header>
       </div>
+
+      <ScrollIndicator targetId="mission-content" show={contentVisible} />
     </div>
   );
 }

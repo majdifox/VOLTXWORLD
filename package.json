@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@fontsource/cormorant-garamond": "^5.2.11",
     "framer-motion": "^12.42.2",
     "next": "16.2.10",
     "react": "19.2.4",

@@ -1,4 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#050505"/>
-  <text x="16" y="21" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1">VX</text>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="650" height="650" viewBox="186.6 9.8 650.8 650.8" xml:space="preserve">
+<desc>VOLTX favicon — tightly cropped so the V fills the icon like GitHub's mark, background transparent</desc>
+<defs>
+</defs>
+
+<g transform="matrix(7.3629 0 0 7.3629 505.3252 335.2305)" style="" id="logo-title">
+		<text xml:space="preserve" font-family="Brandmark-Professional-Stencil" font-size="101" font-style="normal" font-weight="400" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1; white-space: pre;"><tspan x="-35.5015" y="31.7281">V</tspan></text>
+</g>
+<g transform="matrix(7.3629 0 0 7.3629 512.0012 335.2305)" id="glyphGroup_textPair_1e4531ef-305e-4916-b4eb-b5652f42aa39">
+<g style="">
+		<g transform="matrix(1.4028 0 0 1.4028 0.0005 0.0006)">
+<g style="">
+		<g transform="matrix(1 0 0 1 0 0)">
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" translate(-100, -100)" d="M 86.4263 74.7978 L 104.8599 125.2021 L 93.9155 125.2021 L 75.4819 74.7978 L 86.4263 74.7978 Z M 124.5181 74.7978 L 108.9644 116.8496 C 101.9077 112.6016 102.6284 106.4092 102.6284 106.4092 L 112.9966 74.7978 L 124.5181 74.7978 Z" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
 </svg>

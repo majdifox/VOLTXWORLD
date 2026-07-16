@@ -56,7 +56,6 @@ export default function SmokeBackground() {
         }}
       >
         <source src="/smoke-intro.mp4" type="video/mp4" />
-        <source src="/smoke-video.mp4" type="video/mp4" />
       </video>
     </div>
   );
