@@ -238,13 +238,44 @@ export default function HeroContent({ phase }: HeroContentProps) {
                 </motion.p>
 
                 {/* Read More — links to the founder/about page */}
-                <motion.div variants={fadeUp} className="mb-12 mt-">
+                {/*
+                  ========================================================================
+                  USER CONTROLS: READ MORE AFFORDANCE
+                  1. No container/circle this time — text and arrow are sized to match
+                     each other (h-4 w-4 arrow ≈ the cap-height of text-[0.9rem]), so
+                     neither one dominates the other.
+                  2. The arrow gently bounces left-right forever (x: [0, 4, 0]) instead
+                     of the circle breathing — same "please notice me" job, quieter.
+                     Delete the `animate` / `transition` props to make it static.
+                  3. fontSize / tracking / opacity are all on the <span> below.
+                  ========================================================================
+                */}
+                <motion.div variants={fadeUp} className="mb-12">
                   <Link
                     href="/about"
-                    className="group relative inline-block text-[0.7rem] uppercase tracking-[0.3em] text-white opacity-50 transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:opacity-90"
+                    className="group relative inline-flex items-center gap-1.5"
                   >
-                    Read More
-                    <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-white/60 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-x-100" />
+                    <span className="relative leading-none text-[0.9rem] font-normal tracking-wide text-white/70 transition-colors duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:text-white">
+                      Learn more
+                      {/* Underline — grows left to right on hover */}
+                      <span
+                        aria-hidden="true"
+                        className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-white/70 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-x-100"
+                      />
+                    </span>
+                    <motion.svg
+                      className="relative top-[1px] h-4 w-4 shrink-0 self-center text-white/70 transition-colors duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:text-white"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </motion.svg>
                   </Link>
                 </motion.div>
 

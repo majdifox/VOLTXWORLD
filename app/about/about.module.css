@@ -49,7 +49,6 @@
     calc(env(safe-area-inset-left, 0px) + clamp(20px, 5vw, 80px));
   display: flex;
   align-items: center;
-  mix-blend-mode: difference;
   transform: translateY(0);
   opacity: 1;
   transition:
@@ -72,6 +71,10 @@ height: clamp(36px, 5vw, 44px);
   /* Nudge left to clear the hero text — scales with viewport instead of a
      flat -40px, which pushed the logo off-screen on narrow phones */
   margin-left: clamp(-0px, -4vw, -8px);
+  /* Force pure white regardless of the SVG's original fill — matches
+     the bottom logo instead of the dim/grey look from the old
+     mix-blend-mode: difference on .masthead */
+  filter: brightness(0) invert(1);
 }
 
 /* ═══════════════════════════════════════════════════════════════════

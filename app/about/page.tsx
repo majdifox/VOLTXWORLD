@@ -91,26 +91,18 @@ function Reveal({
 function useSmartHeader() {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
-  const lastY = useRef(0);
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
-    const previous = lastY.current;
-    const delta = latest - previous;
     const maxScroll =
       document.documentElement.scrollHeight - window.innerHeight;
 
-    if (latest < 80 || latest > maxScroll - 80) {
-      // Always show near the top of the page and near the very end
-      setHidden(false);
-    } else if (delta > 4) {
-      // Scrolling down with intent — get out of the way
-      setHidden(true);
-    } else if (delta < -4) {
-      // Scrolling up — user wants to go back, bring it back
-      setHidden(false);
-    }
+    // Visible only at the very top or the very bottom of the page.
+    // Scroll direction doesn't matter — position is the only thing
+    // that decides visibility now.
+    const atTop = latest < 80;
+    const atBottom = latest > maxScroll - 80;
 
-    lastY.current = latest;
+    setHidden(!(atTop || atBottom));
   });
 
   return hidden;
@@ -376,7 +368,9 @@ export default function FounderPage() {
         className={`${styles.masthead} ${headerHidden ? styles.mastheadHidden : ''}`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="VOLTX_about.svg" alt="VOLTX" className={styles.mastheadLogo} />
+        <Link href="/" aria-label="VOLTX — Home">
+          <img src="VOLTX_about.svg" alt="VOLTX" className={styles.mastheadLogo} />
+        </Link>
       </header>
 
       <Hero />
@@ -388,13 +382,35 @@ export default function FounderPage() {
       <Closing />
 
       {/* Join the Waitlist — small link back to the homepage */}
+      {/*
+        ========================================================================
+        Same affordance pattern as "Learn more" on the homepage hero:
+        text + a real ">" glyph (not an SVG) so it shares the exact same
+        baseline as the text with zero manual pixel-nudging, plus a slow
+        left-right bounce to draw the eye. Delete `animate`/`transition`
+        on the motion.span to make it static.
+        ========================================================================
+      */}
       <div className="w-full text-center" style={{ padding: '0 0 clamp(48px, 8vh, 96px)' }}>
         <Link
           href="/"
-          className="group relative inline-block text-[10px] font-normal uppercase tracking-[0.3em] text-[var(--ink-dim)] opacity-70 transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:opacity-100"
+          className="group relative inline-flex items-center gap-1.5"
         >
-          Join the Waitlist
-          <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-white/50 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-x-100" />
+          <span className="relative text-[10px] font-normal uppercase leading-none tracking-[0.3em] text-white transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] opacity-90 group-hover:opacity-100">
+            Join the Waitlist
+            {/* Underline — grows left to right on hover, matching the homepage "Learn more" link */}
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-white transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-x-100"
+            />
+          </span>
+          <motion.span
+            className="text-[13px] font-normal leading-none text-white transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] opacity-90 group-hover:opacity-100"
+            animate={{ x: [0, 4, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            &#8250;
+          </motion.span>
         </Link>
       </div>
 
