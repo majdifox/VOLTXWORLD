@@ -122,35 +122,27 @@ function useSmartHeader() {
 
 function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start'],
-  });
 
   // Subtle parallax — portrait drifts upward as you scroll down
   // const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
   // Slow Ken Burns zoom
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.08]);
+
 
   return (
     <section ref={containerRef} className={styles.hero} id="hero">
       {/* Portrait background */}
       <div className={styles.heroImageWrap}>
-        <motion.div
-          style={{
-    scale:imageScale
-}}
-          className="w-full h-full"
-        >
-         <Image
-  src="/portrait_sign.jpg"
-  alt="Mehdi Majdi"
-  fill
-  priority
-  sizes="100vw"
-/>
-        </motion.div>
-      </div>
+  <div className="w-full h-full">
+    <Image
+      src="/portrait_sign.jpg"
+      alt="Mehdi Majdi"
+      fill
+      priority
+        quality={100}
+      sizes="100vw"
+    />
+  </div>
+</div>
 
       {/* Content */}
       <div className={styles.heroContent}>
@@ -174,16 +166,16 @@ function Hero() {
           custom={0.8}
         />
 
-        <motion.p
-          className={styles.heroTagline}
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0.9}
-        >
-          A Moroccan founder, designer, and entrepreneur, driven by one
-          belief — technology shouldn&apos;t replace real life.
-        </motion.p>
+<motion.p
+  className={styles.heroTagline}
+  variants={fadeUp}
+  initial="hidden"
+  animate="visible"
+  custom={0.9}
+>
+  A Moroccan founder, designer, and entrepreneur, driven
+  <span className={styles.desktopLine}> by&nbsp;one belief — technology shouldn't replace real life.</span>
+</motion.p>
       </div>
     </section>
   );

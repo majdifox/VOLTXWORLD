@@ -212,9 +212,28 @@ height: clamp(36px, 5vw, 44px);
   font-size: clamp(17px, 2vw, 23px);
   line-height: 1.6;
   color: var(--ink-soft);
-  max-width: 520px;
+  max-width: 460px;
 }
 
+.desktopLine {
+  display: inline;
+}
+
+@media (min-width: 768px) {
+  .desktopLine {
+    display: block;
+  }
+}
+
+.desktopLine {
+  display: inline;
+}
+
+@media (min-width: 1024px) {
+  .desktopLine {
+    display: block;
+  }
+}
 /* ═══════════════════════════════════════════════════════════════════
    § 2  STATEMENT — Centered on viewport
    ═══════════════════════════════════════════════════════════════════ */
