@@ -128,7 +128,7 @@ function Hero() {
   });
 
   // Subtle parallax — portrait drifts upward as you scroll down
-  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  // const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
   // Slow Ken Burns zoom
   const imageScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.08]);
 
@@ -137,16 +137,18 @@ function Hero() {
       {/* Portrait background */}
       <div className={styles.heroImageWrap}>
         <motion.div
-          style={{ y: imageY, scale: imageScale }}
+          style={{
+    scale:imageScale
+}}
           className="w-full h-full"
         >
-          <Image
-            src="/portrait_sign.jpg"
-            alt="Mehdi Majdi"
-            fill
-            priority
-            sizes="100vw"
-          />
+         <Image
+  src="/portrait_sign.jpg"
+  alt="Mehdi Majdi"
+  fill
+  priority
+  sizes="100vw"
+/>
         </motion.div>
       </div>
 
