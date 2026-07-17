@@ -1,11 +1,12 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import {
   motion,
   useScroll,
   useTransform,
   useInView,
+  useMotionValueEvent,
 } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -81,6 +82,41 @@ function Reveal({
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   Smart Header — hides on scroll-down, reveals on scroll-up.
+   Always visible near the very top and very bottom of the page.
+   The classic Apple / Vercel pattern: get out of the way while
+   reading, reappear the moment intent-to-go-back shows up.
+   ═══════════════════════════════════════════════════════════════════ */
+
+function useSmartHeader() {
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const previous = lastY.current;
+    const delta = latest - previous;
+    const maxScroll =
+      document.documentElement.scrollHeight - window.innerHeight;
+
+    if (latest < 80 || latest > maxScroll - 80) {
+      // Always show near the top of the page and near the very end
+      setHidden(false);
+    } else if (delta > 4) {
+      // Scrolling down with intent — get out of the way
+      setHidden(true);
+    } else if (delta < -4) {
+      // Scrolling up — user wants to go back, bring it back
+      setHidden(false);
+    }
+
+    lastY.current = latest;
+  });
+
+  return hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    § HERO
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -110,11 +146,6 @@ function Hero() {
             fill
             priority
             sizes="100vw"
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'right ',
-      
-            }}
           />
         </motion.div>
       </div>
@@ -342,10 +373,14 @@ function Closing() {
    ═══════════════════════════════════════════════════════════════════ */
 
 export default function FounderPage() {
+  const headerHidden = useSmartHeader();
+
   return (
     <main className={styles.page}>
       {/* Fixed masthead */}
-      <header className={styles.masthead}>
+      <header
+        className={`${styles.masthead} ${headerHidden ? styles.mastheadHidden : ''}`}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="VOLTX_about.svg" alt="VOLTX" className={styles.mastheadLogo} />
       </header>

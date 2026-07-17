@@ -32,7 +32,8 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 5vw, 80px);
+  padding: 0 calc(env(safe-area-inset-right, 0px) + clamp(24px, 5vw, 80px))
+    0 calc(env(safe-area-inset-left, 0px) + clamp(24px, 5vw, 80px));
 }
 
 /* ── Masthead ─────────────────────────────────────────────────────── */
@@ -42,19 +43,35 @@
   left: 0;
   right: 0;
   z-index: 100;
-  padding: clamp(24px, 4vh, 36px) clamp(24px, 5vw, 80px);
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(20px, 4vh, 36px))
+    calc(env(safe-area-inset-right, 0px) + clamp(20px, 5vw, 80px))
+    clamp(20px, 4vh, 36px)
+    calc(env(safe-area-inset-left, 0px) + clamp(20px, 5vw, 80px));
   display: flex;
   align-items: center;
   mix-blend-mode: difference;
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.mastheadHidden {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .mastheadLogo {
-height: clamp(24px, 3.5vw, 32px);
+height: clamp(36px, 5vw, 44px);
   /* Restored to optimal size after SVG crop */
   width: auto;
   display: block;
-  /* Small nudge left so it clears the hero text below on scroll */
-  margin-left: -40px;
+  /* Nudge left to clear the hero text — scales with viewport instead of a
+     flat -40px, which pushed the logo off-screen on narrow phones */
+  margin-left: clamp(-0px, -4vw, -8px);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -85,6 +102,27 @@ height: clamp(24px, 3.5vw, 32px);
   filter: contrast(1.12) brightness(0.9);
   opacity: 0.82;
   will-change: transform;
+}
+
+/* Tall/narrow phone screens crop more aggressively — bias the crop upward
+   so the face/torso stay in frame instead of getting pushed out the top */
+@media (max-width: 480px) {
+  .heroImageWrap img {
+    object-position: center 6%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .heroImageWrap img {
+    object-position: center 10%;
+  }
+}
+
+/* iPads (mini through Pro, portrait) sit between phone and desktop crops */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .heroImageWrap img {
+    object-position: center 12%;
+  }
 }
 
 /* Gradient overlay — forces text legibility at bottom */
@@ -119,7 +157,9 @@ height: clamp(24px, 3.5vw, 32px);
 .heroContent {
   position: relative;
   z-index: 2;
-  padding: 0 clamp(24px, 5vw, 80px) clamp(48px, 8vh, 96px);
+  padding: 0 calc(env(safe-area-inset-right, 0px) + clamp(24px, 5vw, 80px))
+    calc(env(safe-area-inset-bottom, 0px) + clamp(48px, 8vh, 96px))
+    calc(env(safe-area-inset-left, 0px) + clamp(24px, 5vw, 80px));
   max-width: 1200px;
 }
 
@@ -450,6 +490,20 @@ height: clamp(24px, 3.5vw, 32px);
 
   .whyTitle {
     max-width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .heroName {
+    font-size: clamp(72px, 11vw, 140px);
+  }
+
+  .heroTagline {
+    max-width: 460px;
+  }
+
+  .philosophyBody {
+    max-width: 560px;
   }
 }
 
