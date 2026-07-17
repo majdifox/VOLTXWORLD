@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import type { IntroPhase } from "@/app/page";
 import WaitlistForm from "./WaitlistForm";
 import ScrollIndicator from "./ScrollIndicator";
 import Footer from "./Footer";
+import { ExitCurtain, EXIT_DURATION_MS } from "./PageTransition";
 
 // ─── Cinematic scroll-to-element ───────────────────────────────────────────
 // Native `scrollIntoView({ behavior: "smooth" })` is linear and abrupt.
@@ -67,6 +69,17 @@ interface HeroContentProps {
 }
 
 export default function HeroContent({ phase }: HeroContentProps) {
+  const router = useRouter();
+  // Drives the exit curtain + the subtle "pull back" on the page content
+  // when the visitor commits to leaving via "Learn more".
+  const [isLeaving, setIsLeaving] = useState(false);
+
+  const goToAbout = () => {
+    if (isLeaving) return; // guard against double-clicks mid-transition
+    setIsLeaving(true);
+    setTimeout(() => router.push("/about"), EXIT_DURATION_MS);
+  };
+
   // Completely responsive logo size: shrinks to 280px on tiny phones, caps at 820px on ultrawides
   const logoSize = "clamp(280px, 65vw, 820px)";
 
@@ -99,7 +112,16 @@ export default function HeroContent({ phase }: HeroContentProps) {
   }, [contentVisible]);
 
   return (
-    <div className="content-layer w-full">
+    <motion.div
+      className="content-layer w-full"
+      animate={
+        isLeaving
+          ? { scale: 0.97, opacity: 0.4, filter: "blur(6px)" }
+          : { scale: 1, opacity: 1, filter: "blur(0px)" }
+      }
+      transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+      style={{ willChange: "transform, opacity, filter" }}
+    >
       {/*
         ── Hero viewport section ──────────────────────────────────────────────
         The logo is ALWAYS in the DOM. It never remounts.
@@ -305,6 +327,10 @@ export default function HeroContent({ phase }: HeroContentProps) {
                 <motion.div variants={fadeUp} className="mb-12">
                   <Link
                     href="/about"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      goToAbout();
+                    }}
                     className="group relative inline-flex items-center gap-1.5"
                   >
                     <span className="relative leading-none text-[0.9rem] font-normal tracking-wide text-white/70 transition-colors duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:text-white">
@@ -365,6 +391,7 @@ export default function HeroContent({ phase }: HeroContentProps) {
       </div>
 
       <ScrollIndicator targetId="mission-content" show={contentVisible} />
-    </div>
+      <ExitCurtain active={isLeaving} />
+    </motion.div>
   );
 }

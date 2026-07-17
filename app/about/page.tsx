@@ -13,6 +13,7 @@ import Link from 'next/link';
 import styles from './about.module.css';
 import Footer from '../../components/Footer';
 import ScrollIndicator from '../../components/ScrollIndicator';
+import { EntryCurtain } from '../../components/PageTransition';
 
 /* ═══════════════════════════════════════════════════════════════════
    Animation Constants
@@ -124,17 +125,30 @@ function Hero() {
     <section ref={containerRef} className={styles.hero} id="hero">
       {/* Portrait background */}
       <div className={styles.heroImageWrap}>
-  <div className="w-full h-full">
-    <Image
-      src="/portrait_sign.jpg"
-      alt="Mehdi Majdi"
-      fill
-      priority
-        quality={100}
-      sizes="100vw"
-    />
-  </div>
-</div>
+        <motion.div
+          className="w-full h-full"
+          initial={{ scale: 1.16, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{
+            // Slow Ken Burns zoom-out — long enough that it never feels
+            // "done", it's just quietly still breathing in the background.
+            scale: { duration:3, ease: EASE_APPLE },
+            // Fade in a beat after the black curtain begins lifting so the
+            // image arrives with it rather than popping in underneath.
+            opacity: { duration: 1.8, ease: EASE_APPLE, delay: 0.25 },
+          }}
+          style={{ willChange: 'transform, opacity' }}
+        >
+          <Image
+            src="/portrait_sign.jpg"
+            alt="Mehdi Majdi"
+            fill
+            priority
+            quality={100}
+            sizes="100vw"
+          />
+        </motion.div>
+      </div>
 
       {/* Content */}
       <div className={styles.heroContent}>
@@ -363,6 +377,12 @@ export default function FounderPage() {
 
   return (
     <main className={styles.page}>
+      {/* Curtain — starts pure black, lifts to reveal the page beneath.
+          Pairs with ExitCurtain on the homepage's "Learn more" link so
+          the two routes read as one continuous fade instead of a hard
+          page swap. */}
+      <EntryCurtain />
+
       {/* Fixed masthead */}
       <header
         className={`${styles.masthead} ${headerHidden ? styles.mastheadHidden : ''}`}
