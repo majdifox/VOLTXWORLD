@@ -1,9 +1,11 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
+import Link from "next/link";
 import type { IntroPhase } from "@/app/page";
 import WaitlistForm from "./WaitlistForm";
 import ScrollIndicator from "./ScrollIndicator";
+import Footer from "./Footer";
 
 // ─── Below-the-fold content animation variants ────────────────────────────────
 const container: Variants = {
@@ -227,13 +229,24 @@ export default function HeroContent({ phase }: HeroContentProps) {
                     fontFamily: "inherit", /* <-- FONT (POLICE). "inherit" uses the default font. */
                     fontSize: "clamp(0.95rem, 1.35vw, 1.1rem)", /* <-- SIZE */
                     marginTop: "0px", /* <-- INCREASE TO PUSH DOWN AWAY FROM TAGLINE */
-                    marginBottom: "clamp(40px, 10vw, 80px)", /* <-- DISTANCE TO "LAUNCHING SOON" */
+                    marginBottom: "0px", /* <-- DISTANCE TO READ MORE LINK */
                   }}
                 >
                   VOLTX&apos;s mission is to bridge the gap between curiosity and action,
                   empowering people to discover new opportunities, build meaningful
                   connections, and find where they truly belong.
                 </motion.p>
+
+                {/* Read More — links to the founder/about page */}
+                <motion.div variants={fadeUp} className="mb-12 mt-">
+                  <Link
+                    href="/about"
+                    className="group relative inline-block text-[0.7rem] uppercase tracking-[0.3em] text-white opacity-50 transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:opacity-90"
+                  >
+                    Read More
+                    <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-white/60 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-x-100" />
+                  </Link>
+                </motion.div>
 
                 {/* Launching Soon */}
                 <motion.div variants={fadeUp} className="mb-12">
@@ -254,111 +267,8 @@ export default function HeroContent({ phase }: HeroContentProps) {
   variants={fadeUp}
   className="mt-auto flex w-full flex-col items-center justify-end pt-36 pb-0"
 >
-                  {/* Created By & Signature (Moved to footer) */}
-                  <div className="mb-0 flex flex-col items-center justify-center">
-                 <p className="-mb-6 text-[0.7rem] uppercase tracking-[0.3em] text-white opacity-50">
-                      Created by
-                    </p>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/majdi-signature.svg"
-                      alt="Mehdi Majdi Signature"
-                      // Responsive signature size: smaller on phones, huge on desktop
-                      className="h-24 w-auto object-contain opacity-90 sm:h-32 md:h-40"
-                      style={{ filter: "brightness(0) invert(1)" }}
-                    />
-                  </div>
-
-                  {/* Contact: Instagram + Email — matched icon pair, email reveals on hover */}
-                  <div className="mb-4 flex items-center justify-center gap-6">
-                    <a
-                      href="https://www.instagram.com/voltxworld/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="VOLTX on Instagram"
-                      className="group relative flex h-9 w-9 items-center justify-center rounded-full text-white opacity-60 transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:opacity-100"
-                    >
-                      {/* Soft halo — mirrors Apple's circular icon-button hover state */}
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-0 scale-90 rounded-full bg-white/0 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-100 group-hover:bg-white/[0.06]"
-                      />
-                      {/* Minimal inline Instagram glyph — no external icon package */}
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.3"
-                        aria-hidden="true"
-                        className="relative transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.08]"
-                      >
-                        <rect x="2" y="2" width="20" height="20" rx="6" />
-                        <circle cx="12" cy="12" r="4.2" />
-                        <circle cx="17.2" cy="6.8" r="0.8" fill="currentColor" stroke="none" />
-                      </svg>
-                    </a>
-
-                    {/* Slim divider — quieter than a slash, closer to Apple's footer typography */}
-                    <span aria-hidden="true" className="h-3 w-px bg-white/20" />
-
-                    {/*
-                      Email — icon-only at rest, expands into a pill on hover to reveal
-                      the address. Keeps the row minimal by default, rewards a closer look.
-                    */}
-                    <a
-                      href="mailto:contact@voltxworld.com"
-                      aria-label="Email VOLTX at contact@voltxworld.com"
-                      className="group relative flex h-9 items-center overflow-hidden rounded-full pl-[9px] pr-[9px] text-white opacity-60 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:bg-white/[0.06] hover:pr-4 hover:opacity-100"
-                    >
-                      {/* Minimal inline envelope glyph — matches Instagram glyph's weight */}
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.3"
-                        aria-hidden="true"
-                        className="relative shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.08]"
-                      >
-                        <rect x="2.5" y="5" width="19" height="14" rx="3" />
-                        <path d="M4 6.5 L12 13 L20 6.5" />
-                      </svg>
-
-                      {/* The address — collapsed to nothing at rest, slides out on hover */}
-                      <span
-                        className="max-w-0 overflow-hidden whitespace-nowrap text-[0.8rem] tracking-widest opacity-0 transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:ml-2 group-hover:max-w-[220px] group-hover:opacity-100"
-                      >
-                        contact@voltxworld.com
-                      </span>
-                    </a>
-                  </div>
-
-                {/* Morocco Line */}
-<div className="mb-4 flex flex-col items-center justify-center gap-2 text-[0.8rem] tracking-widest">
-  <div className="flex items-center justify-center gap-1.5 text-white opacity-60">
-    <span>Built in Morocco</span>
-
-    <img
-      src="/morocco-flag.svg"
-      alt="Flag of Morocco"
-      className="h-4 w-auto object-contain"
-    />
-  </div>
-
-  <span className="text-white opacity-40">
-    Designed for the world.
-  </span>
-</div>
-
-{/* Copyright */}
-<footer role="contentinfo">
-  <p className="text-[0.65rem] uppercase tracking-[0.2em] text-white opacity-20">
-    © 2026 VOLTX®. All rights reserved.
-  </p>
-</footer>
+                  {/* Footer — extracted into a shared component (see ./Footer.tsx) */}
+                  <Footer />
                 </motion.div>
 
               </div>

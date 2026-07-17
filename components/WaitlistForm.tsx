@@ -111,7 +111,7 @@ export default function WaitlistForm() {
         className="mt-4 w-full shrink-0 whitespace-nowrap rounded-full border border-white/70 px-6 py-2.5 text-[0.8rem] uppercase tracking-[0.25em] text-white transition-colors duration-300 hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         style={{ fontFamily: "var(--font-heading)" }}
       >
-        {status === "loading" ? "JOINING..." : "JOIN WAITLIST"}
+        {status === "loading" ? "JOINING..." : "Join the Waitlist"}
       </button>
 
       {status === "error" && errorMessage && (

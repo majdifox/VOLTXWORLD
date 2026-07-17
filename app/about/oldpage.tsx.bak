@@ -1,0 +1,260 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import styles from './about.module.css';
+
+/**
+ * VOLTX — About the Founder
+ * Black & white, editorial-luxury direction (Vogue / YSL / Prada house style).
+ *
+ * Drop this file at: app/about/page.tsx
+ * Drop the CSS module next to it: app/about/about.module.css
+ *
+ * IMAGES — put your own files in /public/about/
+ *   /public/about/portrait.jpg   -> full-bleed hero background (landscape, high-contrast works best)
+ *   /public/about/gallery-1.jpg
+ *   /public/about/gallery-2.jpg
+ *   /public/about/gallery-3.jpg
+ * Everything is already grayscale-treated in CSS, so color photos are fine —
+ * they'll render black & white automatically to match the page.
+ *
+ * NOTE: I don't have direct access to browse your repo's source files (only
+ * the GitHub page, not the code itself), so this isn't pixel-matched to
+ * HeroContent.tsx. If you paste that component's code here, I'll rebuild
+ * this page to use the exact same type scale, spacing and structure.
+ */
+
+function useParallax() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        // Slow, subtle drift — same restrained parallax feel as Apple product pages
+        el.style.transform = `translate3d(0, ${y * 0.18}px, 0) scale(1.08)`;
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return ref;
+}
+
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add(styles.visible);
+          obs.unobserve(el);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+function Section({ children }: { children: React.ReactNode }) {
+  const ref = useReveal();
+  return (
+    <section ref={ref} className={styles.section}>
+      <div className={styles.shell}>{children}</div>
+    </section>
+  );
+}
+
+export default function AboutPage() {
+  const parallaxRef = useParallax();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    // Trigger the Apple-style hero fade/rise once the page has mounted
+    const t = setTimeout(() => setLoaded(true), 80);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <main className={styles.page}>
+      {/* MASTHEAD */}
+      <div className={styles.shell}>
+        <div className={styles.masthead}>
+          <span className={styles.mark}>VOLTX</span>
+        </div>
+      </div>
+
+      {/* HERO */}
+      <div className={styles.hero}>
+        <div className={styles.heroImageWrap}>
+          {/* replace with your own photo in /public/about/ */}
+          <img ref={parallaxRef} src="/about/portrait.jpg" alt="Mehdi Majdi, founder of VOLTX" />
+        </div>
+        <div className={styles.shell}>
+          <div className={styles.heroInner}>
+            <div className={`${styles.heroIssue} ${styles.heroFade} ${loaded ? styles.heroFadeIn : ''}`}>
+              <span className={styles.label}>About — Founder &amp; CEO</span>
+            </div>
+            <h1
+              className={`${styles.name} ${styles.heroFade} ${loaded ? styles.heroFadeIn : ''}`}
+              style={{ transitionDelay: '0.12s' }}
+            >
+              Majdi<em>Mehdi</em>
+            </h1>
+            <div
+              className={`${styles.heroRule} ${styles.heroFade} ${loaded ? styles.heroFadeIn : ''}`}
+              style={{ transitionDelay: '0.28s' }}
+            />
+            <div className={styles.heroRow}>
+              <p
+                className={`${styles.heroTag} ${styles.heroFade} ${loaded ? styles.heroFadeIn : ''}`}
+                style={{ transitionDelay: '0.36s' }}
+              >
+                A Moroccan founder, designer, and entrepreneur, driven by one
+                belief — technology shouldn&apos;t replace real life.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* STATEMENT */}
+      <div className={styles.statement}>
+        <div className={styles.shell}>
+          <p>
+            VOLTX. <span className={styles.italic}>A different way to experience the world.</span>
+          </p>
+        </div>
+      </div>
+
+      {/* PHILOSOPHY */}
+      <Section>
+        <div className={styles.sectionGrid}>
+          <div>
+            <span className={styles.sectionNum}>N&deg;01</span>
+            <h2 className={styles.sectionTitle}>My Philosophy</h2>
+          </div>
+          <div className={styles.sectionBody}>
+            <p>
+              I believe curiosity is one of the most powerful forces on
+              Earth. VOLTX exists to give it a place to grow.
+            </p>
+          </div>
+        </div>
+        <div className={styles.triptych}>
+          <div>
+            <span className={styles.num}>i.</span>
+            <p>It starts conversations.</p>
+          </div>
+          <div>
+            <span className={styles.num}>ii.</span>
+            <p>It builds communities.</p>
+          </div>
+          <div>
+            <span className={styles.num}>iii.</span>
+            <p>It changes lives.</p>
+          </div>
+        </div>
+      </Section>
+
+      {/* MISSION */}
+      <Section>
+        <div className={styles.sectionGrid}>
+          <div>
+            <span className={styles.sectionNum}>N&deg;02</span>
+            <h2 className={styles.sectionTitle}>Why I Build</h2>
+          </div>
+          <div className={styles.sectionBody}>
+            <p>
+              VOLTX is an early-stage, community-driven platform building a
+              connected ecosystem for real-world experiences — nearby
+              activities, communities, events, and local experience
+              providers, brought together in one place to discover,
+              organize, book, and share.
+            </p>
+            <p>
+              For people, that means one platform to find where they belong.
+              For businesses, it means real discovery and real growth. VOLTX
+              bridges the gap between curiosity and action, and empowers
+              people to explore, connect, and find where they belong.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      {/* PULL QUOTE */}
+      <div className={styles.quoteBlock}>
+        <div className={styles.shell}>
+          <blockquote>
+            &ldquo;Technology should bring people closer, not keep them
+            apart. That&apos;s why I&apos;m building VOLTX — a platform
+            shaping the future of local experiences.&rdquo;
+          </blockquote>
+          <div className={styles.quoteAttr}>Mehdi Majdi — Founder, VOLTX</div>
+        </div>
+      </div>
+
+      {/* GALLERY */}
+      <Section>
+        <div className={styles.sectionGrid}>
+          <div>
+            <span className={styles.sectionNum}>N&deg;03</span>
+            <h2 className={styles.sectionTitle}>Behind It</h2>
+          </div>
+          <div className={styles.sectionBody}>
+            <p>Every late night was worth it.</p>
+          </div>
+        </div>
+        <div className={styles.gallery}>
+          {/* replace each src with your own photo in /public/about/ */}
+          <div className={styles.galleryItem}>
+            <img src="/about/gallery-1.jpg" alt="" />
+          </div>
+          <div className={styles.galleryItem}>
+            <img src="/about/gallery-2.jpg" alt="" />
+          </div>
+          <div className={styles.galleryItem}>
+            <img src="/about/gallery-3.jpg" alt="" />
+          </div>
+        </div>
+      </Section>
+
+      {/* CLOSING */}
+      <div className={styles.closing}>
+        <div className={styles.shell}>
+          <div className={styles.lede}>
+            <p>If you&apos;ve made it this far — thank you.</p>
+            <p>
+              Whether we meet through VOLTX, somewhere in the world, or
+              never at all, I hope you leave here with one idea.
+            </p>
+          </div>
+          <div className={styles.closingWords}>
+            <span className={styles.dim}>Someone you&apos;ve never met.</span><br />
+            <span className={styles.dim}>Somewhere you&apos;ve never been.</span><br />
+            <em>Something you&apos;ve never imagined.</em>
+          </div>
+          <div className={styles.goExplore}>Go explore.</div>
+          <div className={styles.signOff}>
+            <p>That&apos;s where life begins.</p>
+            <strong>— Mehdi Majdi</strong>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.footer}>
+        <span>VOLTX &mdash; Morocco</span>
+      </div>
+    </main>
+  );
+}

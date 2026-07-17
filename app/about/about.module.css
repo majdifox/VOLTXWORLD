@@ -1,0 +1,484 @@
+/* ═══════════════════════════════════════════════════════════════════
+   VOLTX — Founder Page
+   Editorial luxury. Black & white. Architectural whitespace.
+   References: Apple, Prada, Vogue, COS, Aesop, Dieter Rams.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Design Tokens ────────────────────────────────────────────────── */
+:root {
+  --f-serif: var(--font-serif), 'Georgia', 'Times New Roman', serif;
+  --f-sans: var(--font-inter), 'Helvetica Neue', 'Arial', sans-serif;
+  --ink: #ffffff;
+  --ink-soft: #e8e8e8;
+  --ink-dim: #6b6b6b;
+  --ink-faint: #3a3a3a;
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --line: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Page Shell ───────────────────────────────────────────────────── */
+.page {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Container ────────────────────────────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 80px);
+}
+
+/* ── Masthead ─────────────────────────────────────────────────────── */
+.masthead {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: clamp(24px, 4vh, 36px) clamp(24px, 5vw, 80px);
+  display: flex;
+  align-items: center;
+  mix-blend-mode: difference;
+}
+
+.mastheadLogo {
+height: clamp(24px, 3.5vw, 32px);
+  /* Restored to optimal size after SVG crop */
+  width: auto;
+  display: block;
+  /* Small nudge left so it clears the hero text below on scroll */
+  margin-left: -40px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   § 1  HERO — Full viewport, portrait background
+   ═══════════════════════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+/* Portrait image — full bleed background */
+.heroImageWrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.heroImageWrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  filter: contrast(1.12) brightness(0.9);
+  opacity: 0.82;
+  will-change: transform;
+}
+
+/* Gradient overlay — forces text legibility at bottom */
+.heroImageWrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.05) 30%,
+      rgba(0, 0, 0, 0.4) 60%,
+      rgba(0, 0, 0, 0.85) 80%,
+      #000000 100%);
+}
+
+
+
+/* Film grain texture overlay */
+.heroImageWrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+}
+
+/* Hero content — positioned above image */
+.heroContent {
+  position: relative;
+  z-index: 2;
+  padding: 0 clamp(24px, 5vw, 80px) clamp(48px, 8vh, 96px);
+  max-width: 1200px;
+}
+
+
+/* Micro label */
+.heroLabel {
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 28px;
+}
+
+/* Founder name — oversized editorial display */
+.heroName {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: clamp(64px, 14vw, 180px);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.heroName em {
+  font-style: italic;
+  font-weight: 300;
+  display: block;
+  margin-top: 0.05em;
+}
+
+/* Thin divider */
+.heroDivider {
+  width: 100%;
+  height: 1px;
+  background: transparent;
+  margin: clamp(28px, 4vh, 48px) 0 clamp(20px, 3vh, 32px);
+}
+
+
+
+/* Tagline — serif italic */
+.heroTagline {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(17px, 2vw, 23px);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 520px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   § 2  STATEMENT — Centered on viewport
+   ═══════════════════════════════════════════════════════════════════ */
+.statement {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(80px, 12vh, 160px) clamp(24px, 5vw, 80px);
+}
+
+.statementText {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: clamp(28px, 4.5vw, 56px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-align: center;
+  max-width: 900px;
+}
+
+.statementText .brand {
+  font-style: normal;
+  font-weight: 400;
+}
+
+.statementText .editorial {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   § 3  PHILOSOPHY
+   ═══════════════════════════════════════════════════════════════════ */
+.philosophy {
+  padding: clamp(120px, 16vh, 220px) clamp(24px, 5vw, 80px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionLabel {
+  font-family: var(--f-serif);
+  font-weight: 400;
+  font-size: clamp(36px, 5vw, 52px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: clamp(48px, 6vh, 80px);
+}
+
+.philosophyBody {
+  max-width: 640px;
+}
+
+.philosophyLead {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: clamp(22px, 2.8vw, 32px);
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.philosophyFollow {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(20px, 2.4vw, 28px);
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   § 4  WHY — Full viewport, title only (editorial pause)
+   ═══════════════════════════════════════════════════════════════════ */
+.why {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(120px, 16vh, 200px) clamp(24px, 5vw, 80px) clamp(16px, 3vh, 32px);
+}
+
+.whyTitle {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(36px, 7vw, 96px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  max-width: 800px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   § 5  QUOTE
+   ═══════════════════════════════════════════════════════════════════ */
+.quote {
+  padding: 0 clamp(24px, 5vw, 80px) clamp(120px, 16vh, 240px);
+  text-align: center;
+  position: relative;
+}
+
+.quoteMark {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: clamp(80px, 10vw, 140px);
+  line-height: 1;
+  color: var(--ink-faint);
+  display: block;
+  margin-bottom: clamp(24px, 4vh, 48px);
+  user-select: none;
+}
+
+.quoteText {
+  font-family: var(--f-serif);
+  font-style: normal;
+  /* Removed italic for significantly better readability on long-form text */
+  font-weight: 300;
+  font-size: clamp(20px, 2.8vw, 36px);
+  /* Smoother scaling */
+  line-height: 1.45;
+  /* Increased line-height for better breathing room */
+  max-width: 860px;
+  /* Optimal line length for centered text */
+  margin: 0 auto;
+  color: var(--ink);
+  /* Keep body text pure white */
+  letter-spacing: -0.01em;
+}
+
+.quoteText p {
+  margin-bottom: 1.6em;
+  /* Generous paragraph spacing for a clear visual hierarchy */
+}
+
+.quoteText p:last-child {
+  margin-bottom: 0;
+}
+
+/* Subtle highlights for key phrases */
+.highlight {
+  color: var(--color-accent, #c0c0c0);
+  font-style: italic;
+  /* Adds a premium editorial flair to the highlighted words */
+  font-weight: 400;
+  /* A touch heavier to guide the eye */
+}
+
+/* The core thesis statement gets slightly more emphasis */
+.highlightStrong {
+  color: var(--ink);
+  font-weight: 400;
+  font-size: 1.08em;
+  /* Slightly larger */
+  letter-spacing: -0.02em;
+}
+
+.quoteAttribution {
+  margin-top: clamp(32px, 5vh, 56px);
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   § 6  CLOSING
+   ═══════════════════════════════════════════════════════════════════ */
+.closing {
+  padding: clamp(120px, 16vh, 220px) clamp(24px, 5vw, 80px) 0;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.closingPrelude {
+  font-family: var(--f-serif);
+  font-size: clamp(24px, 2.8vw, 40px);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: clamp(16px, 2vh, 24px);
+}
+
+.closingThank {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: clamp(40px, 6vh, 72px);
+}
+
+.closingMessage {
+  font-family: var(--f-sans);
+  font-weight: 300;
+  font-size: clamp(15px, 1.6vw, 19px);
+  line-height: 1.85;
+  color: var(--ink-dim);
+  max-width: 520px;
+  margin: 0 auto clamp(64px, 10vh, 120px);
+}
+
+/* "Go explore." — the cinematic moment */
+.goExplore {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(48px, 10vw, 140px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  padding: clamp(64px, 10vh, 120px) 0;
+}
+
+/* Thin divider above sign-off */
+.closingDivider {
+  width: 60px;
+  height: 1px;
+  background: var(--line);
+  margin: 0 auto clamp(32px, 4vh, 48px);
+}
+
+.signOff {
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: clamp(120px, 16vh, 200px);
+}
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+
+
+.footerText {
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile-first refinements (desktop-first base above)
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .masthead {
+    padding: 24px clamp(20px, 5vw, 40px);
+  }
+
+  .heroContent {
+    padding: 0 clamp(20px, 5vw, 40px) 40px;
+  }
+
+  .heroName em {
+    margin-top: 0.02em;
+  }
+
+  .heroDivider {
+    margin: 24px 0 18px;
+  }
+
+  .philosophyBody {
+    max-width: 100%;
+  }
+
+  .whyTitle {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroLabel {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    margin-bottom: 20px;
+  }
+
+  .heroTagline {
+    max-width: 100%;
+  }
+
+  .quoteMark {
+    font-size: 64px;
+  }
+
+  .goExplore {
+    letter-spacing: -0.01em;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .heroImageWrap img {
+    animation: none !important;
+  }
+}
