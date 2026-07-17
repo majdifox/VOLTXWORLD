@@ -267,7 +267,7 @@ function Quote() {
         <blockquote className={styles.quoteText}>
           <p>
             Many people never discover their talent, their passion, or what they are
-            truly capable of simply because they never find the right environment or
+            truly capable of, simply because they never find the right environment or
             the right people.
           </p>
 

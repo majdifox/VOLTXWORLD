@@ -23,7 +23,7 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
-const SITE_URL = "https://voltx.io";
+const SITE_URL = "https://voltxworld.com";
 const SITE_DESCRIPTION =
   "VOLTX is building the future of local experiences by helping students, communities, creators, and businesses discover opportunities, meet the right people, and transform digital interactions into meaningful real-world connections.";
 
@@ -58,15 +58,22 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: "VOLTX™",
     title: "VOLTX® — Break The Limits",
-    description:
-      "Explore the world. Meet your people. Live the moment.",
+    description: "Explore the world. Meet your people. Live the moment.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "VOLTX — Break The Limits",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "VOLTX® — Break The Limits",
-    description:
-      "Explore the world. Meet your people. Live the moment.",
+    description: "Explore the world. Meet your people. Live the moment.",
     creator: "@voltx",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
