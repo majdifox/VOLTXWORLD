@@ -1,11 +1,42 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import type { IntroPhase } from "@/app/page";
 import WaitlistForm from "./WaitlistForm";
 import ScrollIndicator from "./ScrollIndicator";
 import Footer from "./Footer";
+
+// ─── Cinematic scroll-to-element ───────────────────────────────────────────
+// Native `scrollIntoView({ behavior: "smooth" })` is linear and abrupt.
+// This glides with the same ease-out-cubic curve used across the site, so
+// arriving from the About page feels like part of the same choreography
+// as the intro itself — slow start, soft landing, no snap.
+function smoothScrollTo(target: HTMLElement, duration = 1400) {
+  const startY = window.scrollY;
+  // Center the element in the viewport rather than pinning it to the top —
+  // reads calmer, more "presented to you" than "scrolled at".
+const targetY =
+  startY +
+  target.getBoundingClientRect().top -
+  window.innerHeight * 0.48 +   // 👈 was / 2 (i.e. 0.5), now 0.42
+  target.getBoundingClientRect().height / 2;
+
+  const distance = targetY - startY;
+  const startTime = performance.now();
+
+  const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+  function step(now: number) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    window.scrollTo(0, startY + distance * easeOutCubic(progress));
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
 
 // ─── Below-the-fold content animation variants ────────────────────────────────
 const container: Variants = {
@@ -45,6 +76,27 @@ export default function HeroContent({ phase }: HeroContentProps) {
   const sheenActive = phase === "done";
   // Body content appears only after the intro is completely done
   const contentVisible = phase === "done";
+
+  // ── Deep-link: arriving from /about with "Join the Waitlist" ────────────
+  // Waits for the intro reveal to fully finish and the below-the-fold
+  // content to settle into place before gliding down, so it reads as one
+  // continuous, deliberate motion rather than a jarring jump-cut.
+  useEffect(() => {
+    if (!contentVisible) return;
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("scrollTo") !== "waitlist") return;
+
+    const timer = setTimeout(() => {
+      const el = document.getElementById("waitlist");
+      if (el) smoothScrollTo(el);
+      // Clean the URL so refreshing or sharing the link doesn't re-trigger it
+      window.history.replaceState({}, "", window.location.pathname);
+    }, 1600); // let the stagger sequence (tagline → mission → CTA → waitlist) land first
+
+    return () => clearTimeout(timer);
+  }, [contentVisible]);
 
   return (
     <div className="content-layer w-full">
@@ -290,7 +342,11 @@ export default function HeroContent({ phase }: HeroContentProps) {
                 </motion.div>
 
                 {/* Waitlist Signup */}
-                <motion.div variants={fadeUp} className="mb-12  flex w-full justify-center">
+                <motion.div
+                  id="waitlist"
+                  variants={fadeUp}
+                  className="mb-12  flex w-full justify-center scroll-mt-24"
+                >
                   <WaitlistForm />
                 </motion.div>
 

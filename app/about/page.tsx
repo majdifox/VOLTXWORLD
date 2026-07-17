@@ -393,7 +393,7 @@ export default function FounderPage() {
       */}
       <div className="w-full text-center" style={{ padding: '0 0 clamp(48px, 8vh, 96px)' }}>
         <Link
-          href="/"
+          href="/?scrollTo=waitlist"
           className="group relative inline-flex items-center gap-1.5"
         >
           <span className="relative text-[10px] font-normal uppercase leading-none tracking-[0.3em] text-white transition-opacity duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] opacity-90 group-hover:opacity-100">
